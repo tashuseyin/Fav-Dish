@@ -1,13 +1,16 @@
-package com.example.favdish.ui.splashscreen
+package com.example.favdish.view.activites.splashscreen
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import com.example.favdish.MainActivity
+import com.example.favdish.view.activites.MainActivity
 import com.example.favdish.R
 import com.example.favdish.databinding.ActivitySplashScreenBinding
 
@@ -17,20 +20,24 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        val binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
-        // Animation
-        val splashAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash)
+        val splashAnimation = AnimationUtils.loadAnimation(this@SplashScreenActivity, R.anim.anim_splash)
         binding.tvAppName.animation = splashAnimation
-
-
-        // Aşağıdaki gibi geri aramalar ile animasyon tamamlandıktan sonra herhangi bir işlem yapmak isteyip istemediğinizi göreceğiz.
 
         splashAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
-                // Animasyon başladığında yürütmek istediğiniz kodu ekleyin.
             }
 
             override fun onAnimationEnd(animation: Animation?) {
@@ -41,9 +48,7 @@ class SplashScreenActivity : AppCompatActivity() {
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
-                // Animasyon tekrar yürütüldüğünde yapmak istediğiniz kodu ekleyin.
             }
         })
-
     }
 }

@@ -1,4 +1,4 @@
-package com.example.favdish.ui.notifications
+package com.example.favdish.view.fragment.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

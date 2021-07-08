@@ -1,4 +1,4 @@
-package com.example.favdish.ui.dashboard
+package com.example.favdish.view.fragment.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
