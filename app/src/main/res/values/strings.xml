@@ -18,4 +18,8 @@
     <string name="select_image_action">Select Image Action</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+
+    <string name="title_select_dish_type">SELECT DISH TYPE</string>
+    <string name="title_select_dish_category">SELECT DISH CATEGORY</string>
+    <string name="title_select_dish_cooking_time">SELECT COOKING TIME IN MINUTES</string>
 </resources>

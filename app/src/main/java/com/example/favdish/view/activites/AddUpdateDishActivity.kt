@@ -3,20 +3,34 @@ package com.example.favdish.view.activites
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.favdish.R
 import com.example.favdish.databinding.ActivityAddUpdateDishBinding
+import com.example.favdish.databinding.DialogCustomListBinding
+import com.example.favdish.utils.Constants
+import com.example.favdish.view.adapter.CustomListItemAdapter
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -24,6 +38,10 @@ import com.karumi.dexter.listener.*
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
 
 
 class AddUpdateDishActivity : AppCompatActivity() {
@@ -37,6 +55,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
     private val requestCamera = 1
     private val requestMedia = 200
     private lateinit var photoFile: File
+    private val imageDirectory = "FavDishImages"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +66,28 @@ class AddUpdateDishActivity : AppCompatActivity() {
         binding.ivAddDishImage.setOnClickListener {
             imageSelectedDialog()
         }
+        binding.etType.setOnClickListener {
+            customItemsListDialog(
+                resources.getString(R.string.title_select_dish_type),
+                Constants.dishTypes(),
+                Constants.DISH_TYPE
+            )
+        }
+        binding.etCategory.setOnClickListener {
+            customItemsListDialog(
+                resources.getString(R.string.title_select_dish_category),
+                Constants.dishCategory(),
+                Constants.DISH_CATEGORY
+            )
+        }
+        binding.etCookingTime.setOnClickListener {
+            customItemsListDialog(
+                resources.getString(R.string.title_select_dish_cooking_time),
+                Constants.dishCookingTime(),
+                Constants.DISH_COOKING_TIME
+            )
+        }
+
     }
 
     private fun setupActionBar() {
@@ -57,19 +98,78 @@ class AddUpdateDishActivity : AppCompatActivity() {
         }
     }
 
+    private fun customItemsListDialog(title: String, itemsList: List<String>, selection: String) {
+        val customListDialog = Dialog(this@AddUpdateDishActivity)
+
+        val binding: DialogCustomListBinding = DialogCustomListBinding.inflate(layoutInflater)
+
+        customListDialog.setContentView(binding.root)
+
+        binding.tvTitle.text = title
+        val adapter = CustomListItemAdapter(itemsList, selection)
+        binding.recyclerview.adapter = adapter
+        customListDialog.show()
+    }
+
+    private fun saveImageToInternalStorage(bitmap: Bitmap): String {
+        val wrapper = ContextWrapper(applicationContext)
+        var file = wrapper.getDir(imageDirectory, Context.MODE_PRIVATE)
+        file = File(file, "${UUID.randomUUID()}.jpg")
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return file.absolutePath
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == requestCamera) {
             val image = BitmapFactory.decodeFile(photoFile.absolutePath)
-            val imageNew = bitmapDownSizing(image,500)
+            val imageNew = bitmapDownSizing(image, 500)
             binding.ivDishImage.setImageBitmap(imageNew)
-            //println(imageNew.byteCount)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == requestMedia) {
-            //println(data?.data?.let { contentResolver.sizeOfUri(it) })
-            //binding.ivDishImage.setImageURI(data?.data)
-            Glide.with(this).load(data?.data).into(binding.ivDishImage)
+            data?.let {
+                val bitmap = BitmapFactory.decodeFileDescriptor(
+                    contentResolver.openFileDescriptor(
+                        it.data ?: Uri.EMPTY, "r"
+                    )?.fileDescriptor
+                )
+                val reducedImage = bitmapDownSizing(bitmap, 500)
+                println(reducedImage.byteCount)
+                Glide.with(this).load(reducedImage)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            Log.e("TAG", "Error")
+                            return false
+                        }
 
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            val bitmapImage = resource?.toBitmap()
+                            saveImageToInternalStorage(bitmapImage!!)
+                            return false
+                        }
+                    })
+                    .into(binding.ivDishImage)
+            }
         }
     }
 
@@ -85,6 +185,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                         openCamera()
                     }
                 }
+
                 override fun onPermissionRationaleShouldBeShown(
                     permissions: MutableList<PermissionRequest>?,
                     token: PermissionToken?
@@ -105,9 +206,11 @@ class AddUpdateDishActivity : AppCompatActivity() {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {
                     openGallery()
                 }
+
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
                     TODO("Not yet implemented")
                 }
+
                 override fun onPermissionRationaleShouldBeShown(
                     permissions: PermissionRequest?,
                     token: PermissionToken?
@@ -167,21 +270,21 @@ class AddUpdateDishActivity : AppCompatActivity() {
         }
     }
 
-    private fun bitmapDownSizing(fileBitmap : Bitmap, maxSize: Int) : Bitmap {
+    private fun bitmapDownSizing(fileBitmap: Bitmap, maxSize: Int): Bitmap {
         var width = fileBitmap.width
         var height = fileBitmap.height
 
-        val bitmapRate : Double = width.toDouble() /height.toDouble()
-        if (bitmapRate > 1){
+        val bitmapRate: Double = width.toDouble() / height.toDouble()
+        if (bitmapRate > 1) {
             width = maxSize
             val reducedSize = width / bitmapRate
             height = reducedSize.toInt()
-        }else{
+        } else {
             height = maxSize
             val shortedSize = height * bitmapRate
             width = shortedSize.toInt()
         }
-        return Bitmap.createScaledBitmap(fileBitmap,width,height,true)
+        return Bitmap.createScaledBitmap(fileBitmap, width, height, true)
     }
 
 }

@@ -19,4 +19,6 @@
     <color name="dish_image_background">#E1E1E1</color>
     <color name="blu_grey">#37474f</color>
     <color name="grey_900">#212121</color>
+
+    <color name="divider_line_color">#e0e0e0</color>
 </resources>
