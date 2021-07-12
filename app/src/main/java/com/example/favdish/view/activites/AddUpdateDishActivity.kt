@@ -15,6 +15,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -51,6 +52,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
     private lateinit var cameraPhoto: TextView
     private lateinit var galleryPhoto: TextView
     private lateinit var dialog: Dialog
+    private lateinit var customListDialog: Dialog
     private lateinit var view: View
     private val requestCamera = 1
     private val requestMedia = 200
@@ -62,6 +64,11 @@ class AddUpdateDishActivity : AppCompatActivity() {
         binding = ActivityAddUpdateDishBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
+
+        binding.btnAddDish.setOnClickListener {
+            closeKeyBoard(it)
+            trimView()
+        }
 
         binding.ivAddDishImage.setOnClickListener {
             imageSelectedDialog()
@@ -99,16 +106,31 @@ class AddUpdateDishActivity : AppCompatActivity() {
     }
 
     private fun customItemsListDialog(title: String, itemsList: List<String>, selection: String) {
-        val customListDialog = Dialog(this@AddUpdateDishActivity)
-
+        customListDialog = Dialog(this@AddUpdateDishActivity)
         val binding: DialogCustomListBinding = DialogCustomListBinding.inflate(layoutInflater)
-
         customListDialog.setContentView(binding.root)
 
         binding.tvTitle.text = title
-        val adapter = CustomListItemAdapter(itemsList, selection)
+        val adapter = CustomListItemAdapter(this, itemsList, selection)
         binding.recyclerview.adapter = adapter
         customListDialog.show()
+    }
+
+    fun selectedListItem(item: String, selection: String) {
+        when (selection) {
+            Constants.DISH_TYPE -> {
+                customListDialog.dismiss()
+                binding.etType.setText(item)
+            }
+            Constants.DISH_CATEGORY -> {
+                customListDialog.dismiss()
+                binding.etCategory.setText(item)
+            }
+            Constants.DISH_COOKING_TIME -> {
+                customListDialog.dismiss()
+                binding.etCookingTime.setText(item)
+            }
+        }
     }
 
     private fun saveImageToInternalStorage(bitmap: Bitmap): String {
@@ -197,6 +219,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                     .show()
             }.onSameThread()
             .check()
+        dialog.dismiss()
     }
 
     private fun dispatchTakePictureGalleryIntent() {
@@ -208,7 +231,11 @@ class AddUpdateDishActivity : AppCompatActivity() {
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                    TODO("Not yet implemented")
+                    Toast.makeText(
+                        this@AddUpdateDishActivity,
+                        "You have denied the storage permission to select image.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
@@ -222,6 +249,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                     .show()
             }.onSameThread()
             .check()
+        dialog.dismiss()
     }
 
     private fun getPhotoFile(fileName: String): File {
@@ -285,6 +313,37 @@ class AddUpdateDishActivity : AppCompatActivity() {
             width = shortedSize.toInt()
         }
         return Bitmap.createScaledBitmap(fileBitmap, width, height, true)
+    }
+
+    private fun trimView() {
+        val title = binding.etTitle.text.toString().trim { it <= ' ' }
+        val type = binding.etType.text.toString().trim { it <= ' ' }
+        val category = binding.etCategory.text.toString().trim { it <= ' ' }
+        val ingredients = binding.etIngredients.text.toString().trim { it <= ' ' }
+        val cookingTime = binding.etCookingTime.text.toString().trim { it <= ' ' }
+        val directionCook = binding.etDirectionToCook.text.toString().trim { it <= ' ' }
+
+        val etTitle = binding.etTitle.text.toString()
+        val etType = binding.etType.text.toString()
+        val etCategory = binding.etCategory.text.toString()
+        val etIngredients = binding.etIngredients.text.toString()
+        val etCookingTime = binding.etCookingTime.text.toString()
+        val etDirectionToCook = binding.etDirectionToCook.text.toString()
+
+        if(binding.ivDishImage.drawable == null){
+            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
+                .show()
+        }
+        if (etTitle.isEmpty() || etType.isEmpty() || etCategory.isEmpty() || etIngredients.isEmpty() || etCookingTime.isEmpty() || etDirectionToCook.isEmpty()) {
+            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
+                .show()
+        }
+
+    }
+
+    private fun closeKeyBoard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

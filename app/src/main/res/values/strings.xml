@@ -22,4 +22,6 @@
     <string name="title_select_dish_type">SELECT DISH TYPE</string>
     <string name="title_select_dish_category">SELECT DISH CATEGORY</string>
     <string name="title_select_dish_cooking_time">SELECT COOKING TIME IN MINUTES</string>
+
+    <string name="error_message">Enter dish cooking instructions</string>
 </resources>

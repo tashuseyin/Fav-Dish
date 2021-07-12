@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -46,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/dish_image_background"
                     android:contentDescription="@string/image_contentDescription"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitXY" />
 
                 <ImageView
                     android:id="@+id/iv_add_dish_image"
@@ -55,7 +54,7 @@
                     android:layout_gravity="end|bottom"
                     android:contentDescription="@string/image_contentDescription"
                     android:padding="@dimen/_16sdp"
-                    android:src="@drawable/ic_add_a_photo_24"/>
+                    android:src="@drawable/ic_add_a_photo_24" />
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,11 +74,11 @@
                     android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
                     android:hint="@string/lbl_title"
+                    android:inputType="text"
                     android:textColor="@color/grey_900"
                     android:textSize="@dimen/_15sdp"
-                    android:autofillHints="" />
+                    android:importantForAutofill="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -100,11 +99,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:hint="@string/lbl_type"
                     android:focusableInTouchMode="false"
                     android:inputType="text"
-                    android:hint="@string/lbl_type"
                     android:textColor="@color/grey_900"
-                    android:textSize="@dimen/_15sdp"/>
+                    android:textSize="@dimen/_15sdp"
+                    android:autofillHints="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -126,10 +126,11 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:inputType="text"
                     android:hint="@string/lbl_category"
+                    android:inputType="text"
                     android:textColor="@color/grey_900"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:importantForAutofill="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -149,8 +150,8 @@
                     android:id="@+id/et_ingredients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top"
                     android:hint="@string/lbl_ingredients"
+                    android:importantForAutofill="no"
                     android:inputType="textMultiLine"
                     android:minLines="5"
                     android:textColor="@color/grey_900"
@@ -180,7 +181,8 @@
                     android:gravity="top"
                     android:inputType="text"
                     android:textColor="@color/grey_900"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:importantForAutofill="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -201,10 +203,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
-                    android:hint="@string/lbl_direction_to_cook"
                     android:inputType="text"
+                    android:hint="@string/lbl_direction_to_cook"
                     android:textColor="@color/grey_900"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:importantForAutofill="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

@@ -33,7 +33,8 @@ class SplashScreenActivity : AppCompatActivity() {
             )
         }
 
-        val splashAnimation = AnimationUtils.loadAnimation(this@SplashScreenActivity, R.anim.anim_splash)
+        val splashAnimation =
+            AnimationUtils.loadAnimation(this@SplashScreenActivity, R.anim.anim_splash)
         binding.tvAppName.animation = splashAnimation
 
         splashAnimation.setAnimationListener(object : Animation.AnimationListener {
