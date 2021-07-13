@@ -24,4 +24,6 @@
     <string name="title_select_dish_cooking_time">SELECT COOKING TIME IN MINUTES</string>
 
     <string name="error_message">Enter dish cooking instructions</string>
+    <string name="label_no_dishes_added_yet">No dishes added yet!!</string>
+    <string name="dish_title">Dish Title</string>
 </resources>

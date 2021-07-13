@@ -18,6 +18,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
@@ -28,10 +29,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.favdish.R
+import com.example.favdish.application.App
 import com.example.favdish.databinding.ActivityAddUpdateDishBinding
 import com.example.favdish.databinding.DialogCustomListBinding
+import com.example.favdish.model.entities.FavDish
 import com.example.favdish.utils.Constants
 import com.example.favdish.view.adapter.CustomListItemAdapter
+import com.example.favdish.viewmodel.FavDishViewModel
+import com.example.favdish.viewmodel.FavDishViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -58,6 +63,13 @@ class AddUpdateDishActivity : AppCompatActivity() {
     private val requestMedia = 200
     private lateinit var photoFile: File
     private val imageDirectory = "FavDishImages"
+    private lateinit var imagePath: String
+
+
+    private val favDishViewModel: FavDishViewModel by viewModels {
+        FavDishViewModelFactory((application as App).repository)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,11 +163,14 @@ class AddUpdateDishActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK && requestCode == requestCamera) {
             val image = BitmapFactory.decodeFile(photoFile.absolutePath)
-            val imageNew = bitmapDownSizing(image, 500)
+            val imageNew = bitmapDownSizing(image, 600)
+            imagePath = saveImageToInternalStorage(imageNew)
             binding.ivDishImage.setImageBitmap(imageNew)
         }
+
         if (resultCode == Activity.RESULT_OK && requestCode == requestMedia) {
             data?.let {
                 val bitmap = BitmapFactory.decodeFileDescriptor(
@@ -163,7 +178,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                         it.data ?: Uri.EMPTY, "r"
                     )?.fileDescriptor
                 )
-                val reducedImage = bitmapDownSizing(bitmap, 500)
+                val reducedImage = bitmapDownSizing(bitmap, 600)
                 println(reducedImage.byteCount)
                 Glide.with(this).load(reducedImage)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -186,7 +201,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                             isFirstResource: Boolean
                         ): Boolean {
                             val bitmapImage = resource?.toBitmap()
-                            saveImageToInternalStorage(bitmapImage!!)
+                            imagePath = saveImageToInternalStorage(bitmapImage!!)
                             return false
                         }
                     })
@@ -322,24 +337,34 @@ class AddUpdateDishActivity : AppCompatActivity() {
         val ingredients = binding.etIngredients.text.toString().trim { it <= ' ' }
         val cookingTime = binding.etCookingTime.text.toString().trim { it <= ' ' }
         val directionCook = binding.etDirectionToCook.text.toString().trim { it <= ' ' }
+        val dishImage = binding.ivDishImage.drawable
 
-        val etTitle = binding.etTitle.text.toString()
-        val etType = binding.etType.text.toString()
-        val etCategory = binding.etCategory.text.toString()
-        val etIngredients = binding.etIngredients.text.toString()
-        val etCookingTime = binding.etCookingTime.text.toString()
-        val etDirectionToCook = binding.etDirectionToCook.text.toString()
-
-        if(binding.ivDishImage.drawable == null){
+        if (dishImage == null || title.isEmpty() || type.isEmpty() || category.isEmpty() || ingredients.isEmpty() || cookingTime.isEmpty() || directionCook.isEmpty()) {
             Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
                 .show()
-        }
-        if (etTitle.isEmpty() || etType.isEmpty() || etCategory.isEmpty() || etIngredients.isEmpty() || etCookingTime.isEmpty() || etDirectionToCook.isEmpty()) {
-            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
-                .show()
-        }
+        } else {
+            val favDishDetail = FavDish(
+                imagePath,
+                Constants.DISH_IMAGE_SOURCE_LOCAL,
+                title,
+                type,
+                category,
+                ingredients,
+                cookingTime,
+                directionCook,
+                false
+            )
 
+            favDishViewModel.insert(favDishDetail)
+            Toast.makeText(
+                this,
+                "You successfully added your favorite dish details",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        }
     }
+
 
     private fun closeKeyBoard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -6,6 +6,10 @@ object Constants {
     const val  DISH_CATEGORY: String = "DishCategory"
     const val  DISH_COOKING_TIME: String = "DishCookingTime"
 
+    const val DISH_IMAGE_SOURCE_LOCAL : String = "LOCAL"
+    const val DISH_IMAGE_SOURCE_ONLINE : String = "ONLINE"
+
+
     fun dishTypes(): ArrayList<String>{
         val list = ArrayList<String>()
         list.apply {
@@ -27,6 +31,7 @@ object Constants {
             add("Pizza")
             add("BBQ")
             add("Bakery")
+            add("Steak")
             add("Burger")
             add("Cafe")
             add("Chicken")
@@ -56,7 +61,6 @@ object Constants {
             add("120")
             add("150")
             add("180")
-            add("Other")
         }
         return list
     }

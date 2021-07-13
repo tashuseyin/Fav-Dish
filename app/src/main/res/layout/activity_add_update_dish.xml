@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/dish_image_background"
                     android:contentDescription="@string/image_contentDescription"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/iv_add_dish_image"

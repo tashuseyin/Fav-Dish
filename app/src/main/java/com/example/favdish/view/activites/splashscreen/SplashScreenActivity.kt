@@ -20,7 +20,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -45,7 +45,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 Handler(Looper.getMainLooper()).postDelayed({
                     startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
                     finish()
-                }, 1000)
+                }, 700)
             }
 
             override fun onAnimationRepeat(animation: Animation?) {

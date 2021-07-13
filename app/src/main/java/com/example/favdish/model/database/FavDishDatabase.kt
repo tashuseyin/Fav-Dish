@@ -12,20 +12,21 @@ abstract class FavDishDatabase : RoomDatabase() {
     abstract fun favDishDao(): FavDishDao
 
     companion object {
-
         @Volatile
         private var INSTANCE: FavDishDatabase? = null
 
-        fun getDatabase(context: Context) {
-            synchronized(this) {
-                INSTANCE = Room.databaseBuilder(
+        fun getDatabase(context: Context): FavDishDatabase {
+
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     FavDishDatabase::class.java,
-                    "favDish_database"
+                    "word_database"
                 ).build()
+                INSTANCE = instance
+                instance
             }
         }
-        fun getDatabase() = INSTANCE
     }
-
 }
+
