@@ -16,9 +16,9 @@
         <ImageView
             android:id="@+id/ivDishImage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
+            android:layout_height="@dimen/_180sdp"
             android:layout_margin="@dimen/_1sdp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:contentDescription="@string/image_contentDescription"
             tools:src="@mipmap/ic_launcher_round"/>
 

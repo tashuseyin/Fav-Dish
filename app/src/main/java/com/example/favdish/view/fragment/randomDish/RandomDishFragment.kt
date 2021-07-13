@@ -1,16 +1,16 @@
-package com.example.favdish.view.fragment.notifications
+package com.example.favdish.view.fragment.randomDish
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.favdish.databinding.FragmentNotificationsBinding
+import com.example.favdish.databinding.FragmentRandomDishBinding
 
-class NotificationsFragment : Fragment() {
+class RandomDishFragment : Fragment() {
 
 
-    private var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentRandomDishBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentRandomDishBinding.inflate(inflater, container, false)
         return binding.root
     }
 

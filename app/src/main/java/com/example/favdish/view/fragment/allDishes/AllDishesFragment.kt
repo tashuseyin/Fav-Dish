@@ -1,15 +1,16 @@
-package com.example.favdish.view.fragment.alldishes
+package com.example.favdish.view.fragment.allDishes
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.favdish.R
 import com.example.favdish.application.App
-import com.example.favdish.databinding.FragmentAlldishesBinding
+import com.example.favdish.databinding.FragmentAllDishesBinding
 import com.example.favdish.view.activites.AddUpdateDishActivity
+import com.example.favdish.view.adapter.FavDishAdapter
 import com.example.favdish.viewmodel.FavDishViewModel
 import com.example.favdish.viewmodel.FavDishViewModelFactory
 
@@ -17,7 +18,7 @@ import com.example.favdish.viewmodel.FavDishViewModelFactory
 class AllDishesFragment : Fragment() {
 
 
-    private var _binding: FragmentAlldishesBinding? = null
+    private var _binding: FragmentAllDishesBinding? = null
     private val binding get() = _binding!!
 
 
@@ -35,18 +36,20 @@ class AllDishesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAlldishesBinding.inflate(inflater, container, false)
+        _binding = FragmentAllDishesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favDishViewModel.allDishList.observe(viewLifecycleOwner){ dishes ->
+        binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
+        val adapter = FavDishAdapter()
+        binding.recyclerview.adapter = adapter
+
+        favDishViewModel.allDishList.observe(viewLifecycleOwner) { dishes ->
             dishes.let {
-                for(item in it){
-                    Log.i("Dish Title", "${item.id} :: ${item.title}")
-                }
+                adapter.submitList(it)
             }
         }
     }
@@ -58,7 +61,7 @@ class AllDishesFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             R.id.item_add -> {
                 startActivity(Intent(requireActivity(), AddUpdateDishActivity::class.java))
                 return true
@@ -66,7 +69,6 @@ class AllDishesFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
     override fun onDestroyView() {

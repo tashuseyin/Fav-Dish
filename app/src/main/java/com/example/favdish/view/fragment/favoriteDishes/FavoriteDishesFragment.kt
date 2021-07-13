@@ -1,15 +1,15 @@
-package com.example.favdish.view.fragment.dashboard
+package com.example.favdish.view.fragment.favoriteDishes
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.favdish.databinding.FragmentDashboardBinding
+import com.example.favdish.databinding.FragmentFavoriteDishesBinding
 
-class DashboardFragment : Fragment() {
+class FavoriteDishesFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentFavoriteDishesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteDishesBinding.inflate(inflater, container, false)
         return binding.root
 
 
