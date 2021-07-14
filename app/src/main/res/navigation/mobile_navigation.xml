@@ -32,7 +32,7 @@
         android:label="@string/title_detail_dish"
         tools:layout="@layout/fragment_dish_details">
         <argument
-            android:name="FavDishId"
-            app:argType="integer" />
+            android:name="favDish"
+            app:argType="com.example.favdish.model.entities.FavDish" />
     </fragment>
 </navigation>

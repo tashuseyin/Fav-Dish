@@ -13,6 +13,12 @@
     <color name="primary_dark_color">#00600F</color>
     <color name="primary_light_color">#6ABF69</color>
 
+
+    <color name="blu_grey_900">#263238</color>
+    <color name="grey_500">#9E9E9E</color>
+
+
+
     <color name="secondary_color">#81C784</color>
     <color name="secondary_dark_color">#519657</color>
     <color name="secondary_light_color">#B2FAB4</color>

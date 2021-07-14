@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.favdish.R
 import com.example.favdish.application.App
 import com.example.favdish.databinding.FragmentAllDishesBinding
+import com.example.favdish.model.entities.FavDish
 import com.example.favdish.view.activites.AddUpdateDishActivity
 import com.example.favdish.view.activites.MainActivity
 import com.example.favdish.view.adapter.FavDishAdapter
@@ -50,8 +51,7 @@ class AllDishesFragment : Fragment() {
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
         adapter = FavDishAdapter{ position ->
             val currentFavDish = adapter.currentList[position]
-            val id = currentFavDish.id
-            dishDetails(id)
+            dishDetails(currentFavDish)
         }
         binding.recyclerview.adapter = adapter
 
@@ -62,13 +62,12 @@ class AllDishesFragment : Fragment() {
         }
     }
 
-    private fun dishDetails(id: Int){
-        findNavController().navigate(AllDishesFragmentDirections.actionNavigationAllDishesToDishDetailsFragment(id))
+    private fun dishDetails(favDish: FavDish){
+        findNavController().navigate(AllDishesFragmentDirections.actionNavigationAllDishesToDishDetailsFragment(favDish))
         if (requireActivity() is MainActivity){
             (activity as MainActivity).hideBottomNavigation()
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_menu, menu)
