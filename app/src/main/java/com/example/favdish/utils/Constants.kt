@@ -61,6 +61,7 @@ object Constants {
             add("120")
             add("150")
             add("180")
+            add("200")
         }
         return list
     }

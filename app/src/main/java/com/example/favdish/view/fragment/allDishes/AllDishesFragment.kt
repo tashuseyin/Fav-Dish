@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.favdish.R
 import com.example.favdish.application.App
 import com.example.favdish.databinding.FragmentAllDishesBinding
 import com.example.favdish.view.activites.AddUpdateDishActivity
+import com.example.favdish.view.activites.MainActivity
 import com.example.favdish.view.adapter.FavDishAdapter
 import com.example.favdish.viewmodel.FavDishViewModel
 import com.example.favdish.viewmodel.FavDishViewModelFactory
@@ -17,6 +19,8 @@ import com.example.favdish.viewmodel.FavDishViewModelFactory
 
 class AllDishesFragment : Fragment() {
 
+
+    private lateinit var adapter : FavDishAdapter
 
     private var _binding: FragmentAllDishesBinding? = null
     private val binding get() = _binding!!
@@ -44,13 +48,24 @@ class AllDishesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
-        val adapter = FavDishAdapter()
+        adapter = FavDishAdapter{ position ->
+            val currentFavDish = adapter.currentList[position]
+            val id = currentFavDish.id
+            dishDetails(id)
+        }
         binding.recyclerview.adapter = adapter
 
         favDishViewModel.allDishList.observe(viewLifecycleOwner) { dishes ->
             dishes.let {
                 adapter.submitList(it)
             }
+        }
+    }
+
+    private fun dishDetails(id: Int){
+        findNavController().navigate(AllDishesFragmentDirections.actionNavigationAllDishesToDishDetailsFragment(id))
+        if (requireActivity() is MainActivity){
+            (activity as MainActivity).hideBottomNavigation()
         }
     }
 
@@ -70,6 +85,12 @@ class AllDishesFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is MainActivity){
+            (activity as MainActivity).showBottomNavigation()
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

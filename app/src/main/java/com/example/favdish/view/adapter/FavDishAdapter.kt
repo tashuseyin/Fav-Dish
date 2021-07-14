@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.favdish.databinding.ItemDishLayoutBinding
 import com.example.favdish.model.entities.FavDish
 
-class FavDishAdapter : ListAdapter<FavDish, FavDishViewHolder>(DiffCallback()) {
+class FavDishAdapter(private val onItemClickListener: (Int) -> Unit) : ListAdapter<FavDish, FavDishViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavDishViewHolder {
         val binding =
             ItemDishLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,17 +15,16 @@ class FavDishAdapter : ListAdapter<FavDish, FavDishViewHolder>(DiffCallback()) {
     }
 
     override fun onBindViewHolder(holder: FavDishViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClickListener)
     }
 
-}
+    class DiffCallback : DiffUtil.ItemCallback<FavDish>() {
+        override fun areItemsTheSame(oldItem: FavDish, newItem: FavDish): Boolean {
+            return oldItem.title == newItem.title
+        }
 
-class DiffCallback : DiffUtil.ItemCallback<FavDish>() {
-    override fun areItemsTheSame(oldItem: FavDish, newItem: FavDish): Boolean {
-        return oldItem.title == newItem.title
-    }
-
-    override fun areContentsTheSame(oldItem: FavDish, newItem: FavDish): Boolean {
-        return oldItem == newItem
+        override fun areContentsTheSame(oldItem: FavDish, newItem: FavDish): Boolean {
+            return oldItem == newItem
+        }
     }
 }

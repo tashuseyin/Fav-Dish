@@ -1,5 +1,6 @@
 package com.example.favdish.model.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,5 +17,4 @@ data class FavDish(
     @ColumnInfo(name = "instructions") val directionCook : String,
     @ColumnInfo(name = "favorite_dish") val isFavoriteDish: Boolean = false,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
-
 )

@@ -128,7 +128,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
         customListDialog.show()
     }
 
-    fun selectedListItem(item: String, selection: String) {
+     fun selectedListItem(item: String, selection: String) {
         when (selection) {
             Constants.DISH_TYPE -> {
                 customListDialog.dismiss()
@@ -337,12 +337,17 @@ class AddUpdateDishActivity : AppCompatActivity() {
         val ingredients = binding.etIngredients.text.toString().trim { it <= ' ' }
         val cookingTime = binding.etCookingTime.text.toString().trim { it <= ' ' }
         val directionCook = binding.etDirectionToCook.text.toString().trim { it <= ' ' }
-        val dishImage = binding.ivDishImage.drawable
 
-        if (dishImage == null || title.isEmpty() || type.isEmpty() || category.isEmpty() || ingredients.isEmpty() || cookingTime.isEmpty() || directionCook.isEmpty()) {
-            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
-                .show()
-        } else {
+        val ivTitle = binding.etTitle.text.toString()
+        val ivType = binding.etType.text.toString()
+        val ivCategory = binding.etCategory.text.toString()
+        val ivIngredients = binding.etIngredients.text.toString()
+        val ivCookingTime = binding.etCookingTime.text.toString()
+        val ivDirectionCook = binding.etDirectionToCook.text.toString()
+
+        if (binding.ivDishImage.drawable != null && ivTitle.isNotEmpty() && ivType.isNotEmpty() &&
+            ivCategory.isNotEmpty() && ivIngredients.isNotEmpty() && ivCookingTime.isNotEmpty() && ivDirectionCook.isNotEmpty()
+        ) {
             val favDishDetail = FavDish(
                 imagePath,
                 Constants.DISH_IMAGE_SOURCE_LOCAL,
@@ -354,7 +359,6 @@ class AddUpdateDishActivity : AppCompatActivity() {
                 directionCook,
                 false
             )
-
             favDishViewModel.insert(favDishDetail)
             Toast.makeText(
                 this,
@@ -362,6 +366,10 @@ class AddUpdateDishActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
             finish()
+
+        } else {
+            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
