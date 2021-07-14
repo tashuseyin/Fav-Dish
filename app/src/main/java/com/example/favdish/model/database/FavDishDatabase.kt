@@ -15,18 +15,17 @@ abstract class FavDishDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: FavDishDatabase? = null
 
-        fun getDatabase(context: Context): FavDishDatabase {
-
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+        fun initializeDatabase(context: Context) {
+            synchronized(this) {
+                INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     FavDishDatabase::class.java,
                     "word_database"
                 ).build()
-                INSTANCE = instance
-                instance
             }
         }
+
+        fun getDatabase() = INSTANCE
     }
 }
 

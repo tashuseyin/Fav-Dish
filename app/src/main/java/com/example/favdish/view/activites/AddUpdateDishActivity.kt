@@ -18,10 +18,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,20 +30,19 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.favdish.R
-import com.example.favdish.application.App
 import com.example.favdish.databinding.ActivityAddUpdateDishBinding
 import com.example.favdish.databinding.DialogCustomListBinding
 import com.example.favdish.model.entities.FavDish
 import com.example.favdish.utils.Constants
 import com.example.favdish.view.adapter.CustomListItemAdapter
 import com.example.favdish.viewmodel.FavDishViewModel
-import com.example.favdish.viewmodel.FavDishViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.*
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -66,16 +66,15 @@ class AddUpdateDishActivity : AppCompatActivity() {
     private lateinit var imagePath: String
 
 
-    private val favDishViewModel: FavDishViewModel by viewModels {
-        FavDishViewModelFactory((application as App).repository)
-    }
-
+    private lateinit var favDishViewModel: FavDishViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddUpdateDishBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
+
+        favDishViewModel = ViewModelProvider(this).get(FavDishViewModel::class.java)
 
         binding.btnAddDish.setOnClickListener {
             closeKeyBoard(it)
@@ -128,7 +127,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
         customListDialog.show()
     }
 
-     fun selectedListItem(item: String, selection: String) {
+    fun selectedListItem(item: String, selection: String) {
         when (selection) {
             Constants.DISH_TYPE -> {
                 customListDialog.dismiss()
@@ -359,14 +358,15 @@ class AddUpdateDishActivity : AppCompatActivity() {
                 directionCook,
                 false
             )
-            favDishViewModel.insert(favDishDetail)
+            lifecycleScope.launch {
+                favDishViewModel.insert(favDishDetail)
+            }
             Toast.makeText(
                 this,
                 "You successfully added your favorite dish details",
                 Toast.LENGTH_SHORT
             ).show()
             finish()
-
         } else {
             Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
                 .show()

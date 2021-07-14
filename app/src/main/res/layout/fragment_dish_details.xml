@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO Step 1: Design the Dish Details layout.-->
-<!--START-->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,15 +15,18 @@
         <FrameLayout
             android:id="@+id/fl_dish_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true">
 
             <ImageView
                 android:id="@+id/dishDetailImage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
-                android:background="@color/dish_image_background"
+                android:layout_margin="@dimen/_5sdp"
                 android:contentDescription="@string/image_contentDescription"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -82,18 +84,18 @@
             android:layout_below="@id/dishDetailCategory"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/lbl_ingredients"
-            android:textSize="@dimen/_16sdp"
             android:textColor="@color/blu_grey_900"
+            android:textSize="@dimen/_16sdp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dishDetailIngredientsValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey_900"
+            android:layout_below="@id/dishDetailIngredients"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_below="@id/dishDetailIngredients"
+            android:textColor="@color/grey_900"
             android:textSize="@dimen/_14sdp"
             tools:text="Ingredients Value" />
 
@@ -104,18 +106,18 @@
             android:layout_below="@id/dishDetailIngredientsValue"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/lbl_direction_to_cook"
-            android:textSize="@dimen/_16sdp"
             android:textColor="@color/blu_grey_900"
+            android:textSize="@dimen/_16sdp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dishDetailCookingDirection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey_900"
+            android:layout_below="@id/dishDetailDirection"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_below="@id/dishDetailDirection"
+            android:textColor="@color/grey_900"
             android:textSize="@dimen/_14sdp"
             tools:text="Ingredients Value" />
 

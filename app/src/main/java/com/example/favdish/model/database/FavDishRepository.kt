@@ -1,19 +1,19 @@
 package com.example.favdish.model.database
 
-import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+
 import com.example.favdish.model.entities.FavDish
-import kotlinx.coroutines.flow.Flow
 
-class FavDishRepository(private val favDishDao: FavDishDao) {
+object FavDishRepository {
 
-    @WorkerThread
-    suspend fun insertFavDishData(favDish: FavDish) {
-        favDishDao.insertFavDishDetail(favDish)
+    private val favDishDao by lazy {
+        FavDishDatabase.getDatabase()?.favDishDao()
     }
 
-    fun getAllFavDish(): Flow<List<FavDish>> = favDishDao.getAllFavDishes()
+    suspend fun insertFavDishData(favDish: FavDish) {
+        favDishDao?.insertFavDishDetail(favDish)
+    }
+
+    fun getAllFavDish() = favDishDao?.getAllFavDishes()
 
 
 }
