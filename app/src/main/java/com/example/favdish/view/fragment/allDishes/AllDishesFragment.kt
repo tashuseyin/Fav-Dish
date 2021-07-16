@@ -55,10 +55,12 @@ class AllDishesFragment : Fragment() {
 
         allDishViewModel.allDishList?.observe(viewLifecycleOwner) { dishes ->
             dishes.let {
+                adapter.submitList(null)
                 adapter.submitList(it)
             }
         }
     }
+
 
     private fun dishDetails(favDish: FavDish) {
         findNavController().navigate(

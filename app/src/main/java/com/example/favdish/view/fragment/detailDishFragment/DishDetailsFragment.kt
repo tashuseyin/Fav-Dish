@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.favdish.R
 import com.example.favdish.databinding.FragmentDishDetailsBinding
 
 class DishDetailsFragment : Fragment() {
@@ -30,9 +31,9 @@ class DishDetailsFragment : Fragment() {
         binding.dishDetailTitle.text = args.favDish.title
         binding.dishDetailType.text = args.favDish.type
         binding.dishDetailCategory.text = args.favDish.category
-        binding.dishDetailIngredients.text = args.favDish.ingredients
-        binding.dishDetailDirection.text = args.favDish.directionCook
-
+        binding.dishDetailIngredientsValue.text = args.favDish.ingredients
+        binding.dishDetailDirectionCooking.text = args.favDish.directionCook
+        binding.dishDetailCookingTime.text = resources.getString(R.string.lbl_estimate_cooking_time, args.favDish.cookingTime)
     }
 
 

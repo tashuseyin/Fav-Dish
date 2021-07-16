@@ -2,11 +2,12 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_dish_detail_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars="none"
-    tools:context=".view.fragment.detailDishFragment.DishDetailsFragment">
+    tools:context=".view.fragment.allDishes.AllDishesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,28 +16,26 @@
         <FrameLayout
             android:id="@+id/fl_dish_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/dishDetailImage"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
-                android:layout_margin="@dimen/_5sdp"
+                android:background="@color/dish_image_background"
                 android:contentDescription="@string/image_contentDescription"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"/>
+                android:scaleType="fitXY" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
                 android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/favorite_button_background">
+                android:background="@drawable/favorite_button_background"
+                android:elevation="@dimen/_10sdp">
 
                 <ImageView
-                    android:id="@+id/favoriteButton"
+                    android:id="@+id/iv_favorite_dish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/image_contentDescription"
@@ -84,42 +83,53 @@
             android:layout_below="@id/dishDetailCategory"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/lbl_ingredients"
-            android:textColor="@color/blu_grey_900"
             android:textSize="@dimen/_16sdp"
+            android:textColor="@color/blu_grey_900"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dishDetailIngredientsValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dishDetailIngredients"
+            android:textColor="@color/grey_900"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:textColor="@color/grey_900"
+            android:layout_below="@id/dishDetailIngredients"
             android:textSize="@dimen/_14sdp"
             tools:text="Ingredients Value" />
 
         <TextView
-            android:id="@+id/dishDetailDirection"
+            android:id="@+id/tv_cooking_direction_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/dishDetailIngredientsValue"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/lbl_direction_to_cook"
-            android:textColor="@color/blu_grey_900"
             android:textSize="@dimen/_16sdp"
+            android:textColor="@color/blu_grey_900"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dishDetailCookingDirection"
+            android:id="@+id/dishDetailDirectionCooking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dishDetailDirection"
+            android:textColor="@color/grey_900"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:textColor="@color/grey_900"
+            android:layout_below="@id/tv_cooking_direction_label"
             android:textSize="@dimen/_14sdp"
             tools:text="Ingredients Value" />
 
+        <TextView
+            android:id="@+id/dishDetailCookingTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dishDetailDirectionCooking"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:gravity="center"
+            android:textColor="@color/grey_500"
+            android:textSize="@dimen/_12sdp"
+            tools:text="@string/lbl_estimate_cooking_time" />
     </RelativeLayout>
 </ScrollView>

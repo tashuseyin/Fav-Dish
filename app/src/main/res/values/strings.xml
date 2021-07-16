@@ -23,7 +23,7 @@
     <string name="title_select_dish_type">SELECT DISH TYPE</string>
     <string name="title_select_dish_category">SELECT DISH CATEGORY</string>
     <string name="title_select_dish_cooking_time">SELECT COOKING TIME IN MINUTES</string>
-
+    <string name="lbl_estimate_cooking_time">The approx time required to cook the dish is %1$s minutes.</string>
     <string name="error_message">Enter dish cooking instructions</string>
     <string name="label_no_dishes_added_yet">No dishes added yet!!</string>
     <string name="dish_title">Dish Title</string>

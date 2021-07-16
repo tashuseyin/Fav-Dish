@@ -1,7 +1,6 @@
 package com.example.favdish.view.adapter
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
@@ -27,9 +26,9 @@ class FavDishViewHolder(private val binding: ItemDishLayoutBinding) :
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.e("TAG", "Error loading image", e)
-                    return false
+                    TODO("Not yet implemented")
                 }
+
                 override fun onResourceReady(
                     resource: Drawable?,
                     model: Any?,
@@ -38,10 +37,11 @@ class FavDishViewHolder(private val binding: ItemDishLayoutBinding) :
                     isFirstResource: Boolean
                 ): Boolean {
                     resource?.let {
-                        Palette.from(resource.toBitmap()).generate {
-                            val rgb = it?.lightVibrantSwatch?.rgb ?: 0
-                            binding.cardItem.setCardBackgroundColor(rgb)
-                        }
+                        Palette.from(it.toBitmap())
+                            .generate { palette ->
+                                val rgb = palette?.vibrantSwatch?.rgb ?: 0
+                                binding.cardItem.setCardBackgroundColor(rgb)
+                            }
                     }
                     return false
                 }
