@@ -55,8 +55,15 @@ class AllDishesFragment : Fragment() {
 
         allDishViewModel.allDishList?.observe(viewLifecycleOwner) { dishes ->
             dishes.let {
-                adapter.submitList(null)
-                adapter.submitList(it)
+                if(it.isNotEmpty()){
+                    binding.recyclerview.visibility = View.VISIBLE
+                    binding.tvNoDishesAddedYet.visibility = View.GONE
+                    adapter.submitList(it)
+                }else{
+                    binding.recyclerview.visibility = View.GONE
+                    binding.tvNoDishesAddedYet.visibility = View.VISIBLE
+                }
+
             }
         }
     }

@@ -18,6 +18,7 @@ class FavDishAdapter(private val onItemClickListener: (Int) -> Unit) : ListAdapt
         holder.bind(getItem(position), onItemClickListener)
     }
 
+
     class DiffCallback : DiffUtil.ItemCallback<FavDish>() {
         override fun areItemsTheSame(oldItem: FavDish, newItem: FavDish): Boolean {
             return oldItem.title == newItem.title
