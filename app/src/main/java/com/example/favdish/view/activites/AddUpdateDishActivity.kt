@@ -64,6 +64,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
     private lateinit var photoFile: File
     private val imageDirectory = "FavDishImages"
     private lateinit var imagePath: String
+    private var favDishDetails: FavDish? = null
 
 
     private lateinit var favDishViewModel: FavDishViewModel
@@ -72,7 +73,33 @@ class AddUpdateDishActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddUpdateDishBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (intent.hasExtra(Constants.EXTRA_DISH_DETAILS)) {
+            favDishDetails = intent.getParcelableExtra(Constants.EXTRA_DISH_DETAILS)
+        }
+
         setupActionBar()
+
+        favDishDetails?.let {
+            if (it.id != 0) {
+                imagePath = it.image
+
+                Glide.with(this@AddUpdateDishActivity)
+                    .load(imagePath)
+                    .centerCrop()
+                    .into(binding.ivDishImage)
+
+                binding.etTitle.setText(it.title)
+                binding.etType.setText(it.type)
+                binding.etCategory.setText(it.category)
+                binding.etIngredients.setText(it.ingredients)
+                binding.etCookingTime.setText(it.cookingTime)
+                binding.etDirectionToCook.setText(it.directionCook)
+
+                binding.btnAddDish.text = resources.getString(R.string.lbl_update_dish)
+            }
+        }
+
 
         favDishViewModel = ViewModelProvider(this).get(FavDishViewModel::class.java)
 
@@ -110,7 +137,18 @@ class AddUpdateDishActivity : AppCompatActivity() {
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbarAddDishActivity)
+
+        if (favDishDetails != null) {
+            supportActionBar?.let {
+                it.title = resources.getString(R.string.edit_dish)
+            }
+        } else {
+            supportActionBar?.let {
+                it.title = resources.getString(R.string.add_dish)
+            }
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         binding.toolbarAddDishActivity.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -165,7 +203,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == requestCamera) {
             val image = BitmapFactory.decodeFile(photoFile.absolutePath)
-            val imageNew = bitmapDownSizing(image, 600)
+            val imageNew = bitmapDownSizing(image, 700)
             imagePath = saveImageToInternalStorage(imageNew)
             binding.ivDishImage.setImageBitmap(imageNew)
         }
@@ -177,7 +215,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
                         it.data ?: Uri.EMPTY, "r"
                     )?.fileDescriptor
                 )
-                val reducedImage = bitmapDownSizing(bitmap, 600)
+                val reducedImage = bitmapDownSizing(bitmap, 700)
                 println(reducedImage.byteCount)
                 Glide.with(this).load(reducedImage)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -344,32 +382,41 @@ class AddUpdateDishActivity : AppCompatActivity() {
         val ivCookingTime = binding.etCookingTime.text.toString()
         val ivDirectionCook = binding.etDirectionToCook.text.toString()
 
-        if (binding.ivDishImage.drawable != null && ivTitle.isNotEmpty() && ivType.isNotEmpty() &&
-            ivCategory.isNotEmpty() && ivIngredients.isNotEmpty() && ivCookingTime.isNotEmpty() && ivDirectionCook.isNotEmpty()
+        if (binding.ivDishImage.drawable == null || ivTitle.isEmpty() || ivType.isEmpty() ||
+            ivCategory.isEmpty() || ivIngredients.isEmpty() || ivCookingTime.isEmpty() || ivDirectionCook.isEmpty()
         ) {
-            val favDishDetail = FavDish(
+            Toast.makeText(this,resources.getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+        } else {
+            var imageSource = Constants.DISH_IMAGE_SOURCE_LOCAL
+            var dishId = 0
+            var favoriteDish = false
+
+            favDishDetails?.let {
+                if (it.id != 0) {
+                    imageSource = it.imageSource
+                    dishId = it.id
+                    favoriteDish = it.isFavoriteDish
+                }
+            }
+            val favDishDetails = FavDish(
                 imagePath,
-                Constants.DISH_IMAGE_SOURCE_LOCAL,
+                imageSource,
                 title,
                 type,
                 category,
                 ingredients,
                 cookingTime,
                 directionCook,
-                false
+                favoriteDish,
+                dishId
             )
-            lifecycleScope.launch {
-                favDishViewModel.insert(favDishDetail)
+
+            if (dishId == 0) {
+                lifecycleScope.launch { favDishViewModel.insert(favDishDetails) }
+            } else {
+                lifecycleScope.launch { favDishViewModel.updateFavDishData(favDishDetails) }
             }
-            Toast.makeText(
-                this,
-                "You successfully added your favorite dish details",
-                Toast.LENGTH_SHORT
-            ).show()
             finish()
-        } else {
-            Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT)
-                .show()
         }
     }
 

@@ -63,7 +63,6 @@ class AllDishesFragment : Fragment() {
                     binding.recyclerview.visibility = View.GONE
                     binding.tvNoDishesAddedYet.visibility = View.VISIBLE
                 }
-
             }
         }
     }

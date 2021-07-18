@@ -12,10 +12,12 @@
     <color name="primary_color">#388E3C</color>
     <color name="primary_dark_color">#00600F</color>
     <color name="primary_light_color">#6ABF69</color>
+    <color name="card_color">#3c5ba6</color>
 
 
     <color name="blu_grey_900">#263238</color>
     <color name="grey_500">#9E9E9E</color>
+    <color name="imageTintColor">#28000000</color>
 
 
 

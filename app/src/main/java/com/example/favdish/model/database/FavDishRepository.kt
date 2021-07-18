@@ -15,5 +15,9 @@ object FavDishRepository {
 
     fun getAllFavDish() = favDishDao?.getAllFavDishes()
 
+    suspend fun updateFavDish(favDish: FavDish) = favDishDao?.updateFavDish(favDish)
+
+    fun getFavoriteDishes() = favDishDao?.getFavoriteDishesList()
+
 
 }

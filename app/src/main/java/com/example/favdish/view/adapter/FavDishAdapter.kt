@@ -8,6 +8,7 @@ import com.example.favdish.databinding.ItemDishLayoutBinding
 import com.example.favdish.model.entities.FavDish
 
 class FavDishAdapter(private val onItemClickListener: (Int) -> Unit) : ListAdapter<FavDish, FavDishViewHolder>(DiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavDishViewHolder {
         val binding =
             ItemDishLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -1,16 +1,19 @@
 package com.example.favdish.utils
 
+
 object Constants {
 
-    const val  DISH_TYPE: String = "DishType"
-    const val  DISH_CATEGORY: String = "DishCategory"
-    const val  DISH_COOKING_TIME: String = "DishCookingTime"
+    const val DISH_TYPE: String = "DishType"
+    const val DISH_CATEGORY: String = "DishCategory"
+    const val DISH_COOKING_TIME: String = "DishCookingTime"
 
-    const val DISH_IMAGE_SOURCE_LOCAL : String = "LOCAL"
-    const val DISH_IMAGE_SOURCE_ONLINE : String = "ONLINE"
+    const val DISH_IMAGE_SOURCE_LOCAL: String = "LOCAL"
+    const val DISH_IMAGE_SOURCE_ONLINE: String = "ONLINE"
+
+    const val EXTRA_DISH_DETAILS: String = "DishDetails"
 
 
-    fun dishTypes(): ArrayList<String>{
+    fun dishTypes(): ArrayList<String> {
         val list = ArrayList<String>()
         list.apply {
             add("Breakfast")
@@ -25,7 +28,7 @@ object Constants {
         return list
     }
 
-    fun dishCategory(): ArrayList<String>{
+    fun dishCategory(): ArrayList<String> {
         val list = ArrayList<String>()
         list.apply {
             add("Pizza")
@@ -47,7 +50,7 @@ object Constants {
         return list
     }
 
-    fun dishCookingTime(): ArrayList<String>{
+    fun dishCookingTime(): ArrayList<String> {
         val list = ArrayList<String>()
         list.apply {
             add("10")

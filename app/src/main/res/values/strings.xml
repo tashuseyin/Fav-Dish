@@ -13,18 +13,32 @@
     <string name="lbl_title">Title</string>
     <string name="lbl_type">Type</string>
     <string name="lbl_category">Category</string>
-    <string name="lbl_ingredients">Ingredients</string>
     <string name="lbl_cooking_time_in_minutes">Cooking Time In Minutes</string>
     <string name="lbl_direction_to_cook">Direction To Cook</string>
     <string name="select_image_action">Select Image Action</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
 
+
     <string name="title_select_dish_type">SELECT DISH TYPE</string>
     <string name="title_select_dish_category">SELECT DISH CATEGORY</string>
     <string name="title_select_dish_cooking_time">SELECT COOKING TIME IN MINUTES</string>
     <string name="lbl_estimate_cooking_time">The approx time required to cook the dish is %1$s minutes.</string>
-    <string name="error_message">Enter dish cooking instructions</string>
+    <string name="error_message">Recipe instructions cannot be left blank</string>
     <string name="label_no_dishes_added_yet">No dishes added yet!!</string>
-    <string name="dish_title">Dish Title</string>
+    <string name="dish_title">Dish Title : </string>
+    <string name="dish_type">Dish Type : </string>
+    <string name="dish_category">Dish Category : </string>
+    <string name="lbl_ingredients">Ingredients</string>
+
+    <string name="lbl_update_dish">UPDATE DISH</string>
+
+    <string name="Favorite_added">"You have added the dish to your favorites."</string>
+    <string name="Favorite_removed">"You have removed the dish from your favorites."</string>
+
+    <string name="label_no_favorite_dishes_added_yet">No favorite dishes added yet!!!</string>
+
+    <string name="action_edit_dish">EDIT DISH</string>
+    <string name="action_delete_dish">DELETE DISH</string>
+    <string name="edit_dish">Edit Dish</string>
 </resources>

@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_random_dishes"
+        android:icon="@drawable/ic_random_dish"
+        android:title="@string/title_random_dish" />
+
+    <item
         android:id="@+id/navigation_all_dishes"
         android:icon="@drawable/ic_all_dishes"
         android:title="@string/title_all_dishes" />
@@ -11,9 +16,6 @@
         android:icon="@drawable/ic_favorite_dish"
         android:title="@string/title_favorite_dishes" />
 
-    <item
-        android:id="@+id/navigation_random_dishes"
-        android:icon="@drawable/ic_random_dish"
-        android:title="@string/title_random_dish" />
+
 
 </menu>

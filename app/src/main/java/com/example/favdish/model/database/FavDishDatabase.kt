@@ -20,7 +20,7 @@ abstract class FavDishDatabase : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     FavDishDatabase::class.java,
-                    "word_database"
+                    "favDish_database"
                 ).build()
             }
         }
