@@ -41,4 +41,13 @@
     <string name="action_edit_dish">EDIT DISH</string>
     <string name="action_delete_dish">DELETE DISH</string>
     <string name="edit_dish">Edit Dish</string>
+
+    <string name="title_delete_dish">Delete Dish</string>
+    <string name="msg_delete_title_dishes">Are you sure you wants to delete %1$s</string>
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
+
+    <string name="action_filter_dishes">Filter Dishes</string>
+    <string name="title_select_item_to_filter">SELECT ITEM TO FILTER</string>
+
 </resources>

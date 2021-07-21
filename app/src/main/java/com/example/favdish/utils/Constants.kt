@@ -10,6 +10,9 @@ object Constants {
     const val DISH_IMAGE_SOURCE_LOCAL: String = "LOCAL"
     const val DISH_IMAGE_SOURCE_ONLINE: String = "ONLINE"
 
+    const val ALL_ITEMS = "All"
+    const val FILTER_SELECTION ="FilterSelection"
+
     const val EXTRA_DISH_DETAILS: String = "DishDetails"
 
 

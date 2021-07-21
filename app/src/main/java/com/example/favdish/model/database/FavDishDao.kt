@@ -1,10 +1,7 @@
 package com.example.favdish.model.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.favdish.model.entities.FavDish
 
 @Dao
@@ -21,6 +18,12 @@ interface FavDishDao {
 
     @Query("SELECT * FROM fav_dishes_table WHERE favorite_dish")
     fun getFavoriteDishesList(): LiveData<List<FavDish>>
+
+    @Query("select * FROM fav_dishes_table WHERE type = :filterType")
+    fun getFilteredDishesList(filterType: String): LiveData<List<FavDish>>
+
+    @Delete
+    suspend fun deleteFavDish(favDish: FavDish)
 
 
 }

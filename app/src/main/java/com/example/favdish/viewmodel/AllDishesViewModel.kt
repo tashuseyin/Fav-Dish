@@ -13,6 +13,14 @@ class AllDishesViewModel : ViewModel() {
     val allDishList =_allDishList
 
 
+    fun getFilteredListDishes(value:String) = repository.filteredListDishes(value)
+
     private fun allFavDish()  = repository.getAllFavDish()
+
+    suspend fun deleteFavDish(favDish: FavDish){
+        repository.deleteFavDishes(favDish)
+    }
+
+
 
 }

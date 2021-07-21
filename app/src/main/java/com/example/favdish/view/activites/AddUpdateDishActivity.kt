@@ -160,7 +160,7 @@ class AddUpdateDishActivity : AppCompatActivity() {
         customListDialog.setContentView(binding.root)
 
         binding.tvTitle.text = title
-        val adapter = CustomListItemAdapter(this, itemsList, selection)
+        val adapter = CustomListItemAdapter(this,null, itemsList, selection)
         binding.recyclerview.adapter = adapter
         customListDialog.show()
     }

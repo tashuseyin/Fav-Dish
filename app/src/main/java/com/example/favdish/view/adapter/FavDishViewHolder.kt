@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.PopupMenu
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,12 +18,13 @@ import com.example.favdish.databinding.ItemDishLayoutBinding
 import com.example.favdish.model.entities.FavDish
 import com.example.favdish.utils.Constants
 import com.example.favdish.view.activites.AddUpdateDishActivity
+import com.example.favdish.view.fragment.allDishes.AllDishesFragment
 
 
 class FavDishViewHolder(private val binding: ItemDishLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(favDish: FavDish, onItemClickListener: (Int) -> Unit) {
+    fun bind(fragment: Fragment, favDish: FavDish, onItemClickListener: (Int) -> Unit) {
         binding.tvDishTitle.text = favDish.title
 
         val imageButton = binding.menuButton
@@ -38,7 +40,9 @@ class FavDishViewHolder(private val binding: ItemDishLayoutBinding) :
                     view.context.startActivity(intent)
 
                 } else if (it.itemId == R.id.action_delete_dish) {
-                    Log.i("You have clicked on", "Delete Option of ${favDish.title}")
+                    if (fragment is AllDishesFragment){
+                        fragment.dishDelete(favDish)
+                    }
                 }
                 true
             }

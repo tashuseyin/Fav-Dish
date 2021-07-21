@@ -2,8 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/item_filter"
+        android:title="@string/action_filter_dishes"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
     <item android:id="@+id/item_add"
         android:title="Add Dishes"
         android:icon="@drawable/ic_baseline_add_24"
+        android:orderInCategory="101"
         app:showAsAction="always"/>
+
+
 </menu>

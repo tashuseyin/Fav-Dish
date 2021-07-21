@@ -10,4 +10,5 @@ class CustomListItemViewHolder(private val binding: ItemCustomListLayoutBinding)
     fun bind(item : String){
         binding.tvText.text = item
     }
+
 }

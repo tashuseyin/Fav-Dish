@@ -37,7 +37,7 @@ class FavoriteDishesFragment : Fragment() {
         favoriteViewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
 
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
-        adapter = FavDishAdapter { position ->
+        adapter = FavDishAdapter(this) { position ->
             val currentFavDish = adapter.currentList[position]
             dishDetails(currentFavDish)
         }
