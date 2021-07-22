@@ -1,7 +1,6 @@
 package com.example.favdish.model.database
 
 
-import androidx.lifecycle.LiveData
 import com.example.favdish.model.entities.FavDish
 
 object FavDishRepository {
