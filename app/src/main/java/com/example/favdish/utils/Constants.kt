@@ -31,6 +31,11 @@ object Constants {
     const val NUMBER_VALUE : Int = 1
 
 
+    const val NOTIFICATION_ID = "FavDishNotificationId"
+    const val NOTIFICATION_NAME = "FavDish"
+    const val NOTIFICATION_CHANNEL = "FavDishChannel1"
+
+
     fun dishTypes(): ArrayList<String> {
         val list = ArrayList<String>()
         list.apply {

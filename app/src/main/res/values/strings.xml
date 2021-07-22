@@ -58,4 +58,7 @@
     <string name="msg_already_added_to_favorites">You have already added the dish to your favorites.</string>
     <string name="share">Share Dish</string>
 
+    <string name="notification_title">Checkout new dish recipes</string>
+    <string name="notification_subtitle">Tap for more details</string>
+
 </resources>

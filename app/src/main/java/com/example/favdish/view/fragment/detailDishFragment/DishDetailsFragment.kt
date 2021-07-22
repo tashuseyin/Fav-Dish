@@ -157,8 +157,6 @@ class DishDetailsFragment : Fragment() {
 
             if (it.imageSource == Constants.DISH_IMAGE_SOURCE_ONLINE) {
                 image = it.image
-            }else if(it.imageSource == Constants.DISH_IMAGE_SOURCE_LOCAL){
-                image = it.image
             }
 
             var cookingInstructions = ""
