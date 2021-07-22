@@ -1,12 +1,13 @@
 package com.example.favdish.view.fragment.detailDishFragment
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.favdish.R
 import com.example.favdish.databinding.FragmentDishDetailsBinding
+import com.example.favdish.model.entities.FavDish
+import com.example.favdish.utils.Constants
 import com.example.favdish.viewmodel.DishDetailsViewModel
 import kotlinx.coroutines.launch
 
@@ -28,8 +31,15 @@ class DishDetailsFragment : Fragment() {
     private var _binding: FragmentDishDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var favDish: FavDish
+
     private lateinit var dishDetailsViewModel: DishDetailsViewModel
     private val args: DishDetailsFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +58,8 @@ class DishDetailsFragment : Fragment() {
     }
 
     private fun getDishDetails() {
+
+        favDish = args.favDish
 
         Glide.with(this).load(args.favDish.image)
             .listener(object : RequestListener<Drawable> {
@@ -117,6 +129,64 @@ class DishDetailsFragment : Fragment() {
             ).show()
         }
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_share, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_share_dish -> {
+                onShare()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun onShare() {
+        val type = "text/plain"
+        val subject = "Checkout this dish recipe"
+        var extraText = ""
+        val shareWith = "Share with"
+
+        favDish.let {
+            var image = ""
+
+            if (it.imageSource == Constants.DISH_IMAGE_SOURCE_ONLINE) {
+                image = it.image
+            }else if(it.imageSource == Constants.DISH_IMAGE_SOURCE_LOCAL){
+                image = it.image
+            }
+
+            var cookingInstructions = ""
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                 cookingInstructions = Html.fromHtml(
+                    it.directionCook,
+                    Html.FROM_HTML_MODE_COMPACT
+                ).toString()
+            } else {
+                @Suppress("DEPRECATION")
+                cookingInstructions = Html.fromHtml(it.directionCook).toString()
+            }
+
+            extraText =
+                "$image \n" +
+                        "\n Title:  ${it.title} \n\n Type: ${it.type} \n\n Category: ${it.category}" +
+                        "\n\n Ingredients: \n ${it.ingredients} \n\n Instructions To Cook: \n $cookingInstructions" +
+                        "\n\n Time required to cook the dish approx ${it.cookingTime} minutes."
+        }
+
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        sendIntent.type = type
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, extraText)
+        startActivity(Intent.createChooser(sendIntent, shareWith))
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

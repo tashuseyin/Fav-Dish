@@ -19,7 +19,7 @@ interface FavDishDao {
     @Query("SELECT * FROM fav_dishes_table WHERE favorite_dish")
     fun getFavoriteDishesList(): LiveData<List<FavDish>>
 
-    @Query("select * FROM fav_dishes_table WHERE type = :filterType")
+    @Query("select * FROM fav_dishes_table WHERE type = Lower(:filterType) or type = :filterType")
     fun getFilteredDishesList(filterType: String): LiveData<List<FavDish>>
 
     @Delete

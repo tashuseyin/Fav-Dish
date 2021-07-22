@@ -56,5 +56,6 @@
 
 
     <string name="msg_already_added_to_favorites">You have already added the dish to your favorites.</string>
+    <string name="share">Share Dish</string>
 
 </resources>
